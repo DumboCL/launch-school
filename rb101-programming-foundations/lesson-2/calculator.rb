@@ -23,10 +23,10 @@ def messages(key, language)
   MESSAGES[language][key]
 end
 
-def prompt(key, language = 'en', para = nil)
+def prompt(key, language = 'en', parameter = nil)
   message = messages(key, language)
-  if para
-    Kernel.puts("=> #{message} #{para}")
+  if parameter
+    Kernel.puts("=> #{message} #{parameter}")
   else
     Kernel.puts("=> #{message}")
   end
@@ -36,7 +36,11 @@ def valid_float_number?(num)
   /^[-+]?[0-9]*\.?[0-9]+$/.match(num)
 end
 
-def operation_to_message(op)
+def valid_language_input?(lang)
+  /^[1-2]$/.match(lang)
+end
+
+def processing_message(op)
   message = case op
             when '1'
               'add'
@@ -53,9 +57,10 @@ end
 def pick_language
   prompt("language")
   lang = nil
+
   loop do
     lang = gets().chomp
-    break if /^[1-2]$/.match(lang)
+    break if valid_language_input?(lang)
     prompt("language_error")
   end
   language = case lang
@@ -67,50 +72,26 @@ def pick_language
   language
 end
 
-language = pick_language
-prompt('welcome', language)
+def get_number(number_key, language)
+  number = nil
 
-name = nil
-loop do # name loop
-  name = Kernel.gets().chomp()
+  loop do
+    prompt(number_key, language)
+    number = Kernel.gets().chomp()
 
-  if name.empty?()
-    prompt('valid_name', language)
-  else
-    break
+    if valid_float_number?(number)
+      break
+    else
+      prompt('invalid_number', language)
+    end
   end
+
+  number
 end
 
-prompt("hi", language, name)
-
-number1 = nil
-number2 = nil
-
-loop do # main loop
-  loop do
-    prompt('first_number', language)
-    number1 = Kernel.gets().chomp()
-
-    if valid_float_number?(number1)
-      break
-    else
-      prompt('invalid_number', language)
-    end
-  end
-
-  loop do
-    prompt('second_number', language)
-    number2 = Kernel.gets().chomp()
-
-    if valid_float_number?(number2)
-      break
-    else
-      prompt('invalid_number', language)
-    end
-  end
-
-  prompt("operator_prompt", language)
+def get_operator(language)
   operator = nil
+  prompt("operator_prompt", language)
 
   loop do
     operator = Kernel.gets().chomp()
@@ -122,8 +103,27 @@ loop do # main loop
     end
   end
 
-  prompt(operation_to_message(operator), language)
+  operator
+end
 
+def get_name(language)
+  prompt('welcome', language)
+  name = nil
+
+  loop do
+    name = Kernel.gets().chomp()
+
+    if name.empty?()
+      prompt('valid_name', language)
+    else
+      break
+    end
+  end
+
+  name
+end
+
+def get_result(operator, number1, number2)
   result = case operator
            when '1'
              number1.to_f() + number2.to_f()
@@ -134,6 +134,24 @@ loop do # main loop
            when '4'
              number1.to_f() / number2.to_f()
            end
+
+  result
+end
+
+puts "\e[H\e[2J"
+language = pick_language
+username = get_name(language)
+
+loop do # main loop
+  puts "\e[H\e[2J"
+  prompt("hi", language, username)
+  number1 = get_number('first_number', language)
+  number2 = get_number('second_number', language)
+  operator = get_operator(language)
+
+  prompt(processing_message(operator), language)
+
+  result = get_result(operator, number1, number2)
 
   prompt("result", language, result)
   prompt('ask_for_another', language)
