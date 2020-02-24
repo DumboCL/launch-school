@@ -19,14 +19,18 @@ MESSAGES = YAML.load_file('calculator_messages.yml')
 
 language = nil
 
+def clear_screen
+  system('clear') || system('cls')
+end
+
 def messages(key, language)
   MESSAGES[language][key]
 end
 
-def prompt(key, language = 'en', parameter = nil)
+def prompt(key, language = 'en', message_param = nil)
   message = messages(key, language)
-  if parameter
-    Kernel.puts("=> #{message} #{parameter}")
+  if message_param
+    Kernel.puts("=> #{message} #{message_param}")
   else
     Kernel.puts("=> #{message}")
   end
@@ -138,12 +142,12 @@ def get_result(operator, number1, number2)
   result
 end
 
-puts "\e[H\e[2J"
+clear_screen
 language = pick_language
 username = get_name(language)
 
 loop do # main loop
-  puts "\e[H\e[2J"
+  clear_screen
   prompt("hi", language, username)
   number1 = get_number('first_number', language)
   number2 = get_number('second_number', language)
