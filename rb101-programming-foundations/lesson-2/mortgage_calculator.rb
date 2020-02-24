@@ -13,7 +13,7 @@
 require 'yaml'
 MESSAGES = YAML.load_file('mortgage_calculator_messages.yml')
 
-def clear
+def clear_screen
   system('clear') || system('cls')
 end
 
@@ -30,6 +30,10 @@ def prompt(key, parameter = nil)
   end
 end
 
+def int_verified?(number)
+  /^[0-9]*$/.match(number)
+end
+
 def float_verified?(number)
   /^[-+]?[0-9]*\.?[0-9]+$/.match(number)
 end
@@ -44,6 +48,14 @@ end
 
 def loan_duration_y_veryfied?(duration)
   float_verified?(duration) && duration.to_f > 0
+end
+
+def loan_duration_m_veryfied?(duration)
+  int_verified?(duration) && duration.to_f > 0
+end
+
+def once_again_veryfied?(choose)
+  /^[YyNn]/.match(choose)
 end
 
 def read_loan_amount
@@ -95,9 +107,24 @@ def read_loan_duration_in_years
   loan_duration_y.to_f
 end
 
-def cal_monthly_payment(annual_percentage_rate, loan_duration_y, loan_amount)
+def read_loan_duration_in_months
+  loan_duration_m = nil
+
+  loop do
+    prompt('ask_loan_duration_m')
+    loan_duration_m = Kernel.gets().chomp()
+    if loan_duration_m_veryfied?(loan_duration_m)
+      break
+    else
+      prompt('loan_duration_m_error')
+    end
+  end
+
+  loan_duration_m.to_f
+end
+
+def cal_monthly_payment(annual_percentage_rate, loan_duration_m, loan_amount)
   monthly_interest_rate = annual_percentage_rate / 12
-  loan_duration_m = loan_duration_y * 12
   monthly_payment = loan_amount *
                     (monthly_interest_rate /
                     (1 - (1 + monthly_interest_rate)**(-loan_duration_m)))
@@ -105,29 +132,36 @@ def cal_monthly_payment(annual_percentage_rate, loan_duration_y, loan_amount)
 end
 
 def once_again?
-  prompt('again')
-  response = Kernel.gets().chomp()
-  once_again = if response.downcase() == 'y'
-                 true
-               else
-                 false
-               end
+  response = nil
+
+  loop do
+    prompt('again')
+    response = Kernel.gets().chomp()
+    if once_again_veryfied?(response)
+      break
+    else
+      prompt('again_error')
+    end
+  end
+
+  once_again = response.downcase() == 'y'
 
   once_again
 end
 
-clear
+clear_screen
 # main loop
 loop do
+  clear_screen
   prompt('welcome')
   prompt('divide')
 
   loan_amount = read_loan_amount
   annual_percentage_rate = read_apr
-  loan_duration_y = read_loan_duration_in_years
+  loan_duration_m = read_loan_duration_in_months
 
   monthly_payment = cal_monthly_payment(
-    annual_percentage_rate, loan_duration_y, loan_amount
+    annual_percentage_rate, loan_duration_m, loan_amount
   )
   prompt('show_result', format('%02.2f', monthly_payment))
 
