@@ -17,6 +17,13 @@ def clear_screen
   system('clear') || system('cls')
 end
 
+def initialize_scores
+  initial_scores = { "user" => 0,
+                     "computer" => 0 }
+
+  initial_scores
+end
+
 def prompt(message)
   Kernel.puts("=> #{message}")
 end
@@ -118,7 +125,7 @@ def display_scores(winner, scores)
   end
 end
 
-def once_again?
+def play_again?
   response = nil
 
   loop do
@@ -136,10 +143,12 @@ def once_again?
 end
 
 clear_screen
-scores = { "user" => 0,
-           "computer" => 0 }
+
+initialize_scores
+scores = initialize_scores
 
 prompt("Welcome to Rock, Paper, Scissors, Lizard, Spock!")
+prompt("Either you or computer reaches five wins.")
 
 loop do
   user_choice = read_user_choice
@@ -152,12 +161,11 @@ loop do
   display_results(winner)
   display_scores(winner, scores)
 
-  if game_end?(scores)
-    break
-  else
-    break unless once_again?
-  end
-  puts ''
+  break if game_end?(scores)
+  
+  break unless play_again?
+
+  clear_screen
 end
 
 prompt("Thank you for playing! Good bye.")
