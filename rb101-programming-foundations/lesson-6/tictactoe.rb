@@ -207,12 +207,23 @@ def alternate_player(current_player)
   current_player == 'player' ? 'computer' : 'player'
 end
 
+def one_round_completion(brd, scores, first_player)
+  if someone_won?(brd)
+    winner = detect_winner(brd)
+    update_scores(winner, scores)
+    display_board(brd, scores, first_player)
+    prompt "#{winner.capitalize} won!"
+  else
+    prompt "It's a tie!"
+  end
+end
+
 def play_again?
   response = nil
 
   loop do
     prompt("Play again? (y or n)")
-    response = gets().chomp()
+    response = gets.chomp
     if play_again_veryfied?(response)
       break
     else
@@ -220,7 +231,7 @@ def play_again?
     end
   end
 
-  play_again = response.downcase() == 'y'
+  play_again = response.downcase == 'y'
   play_again
 end
 
@@ -233,6 +244,7 @@ loop do
   board = initialize_board
   first_player = current_player = who_play(first_player_choice)
 
+  # game playing loop for one round
   loop do
     display_board(board, scores, first_player)
     place_piece!(board, current_player)
@@ -241,18 +253,9 @@ loop do
   end
 
   display_board(board, scores, first_player)
-
-  if someone_won?(board)
-    winner = detect_winner(board)
-    update_scores(winner, scores)
-    display_board(board, scores, first_player)
-    prompt "#{winner.capitalize} won!"
-  else
-    prompt "It's a tie!"
-  end
+  one_round_completion(board, scores, first_player)
 
   break if five_wins?(scores)
-
   break unless play_again?
 end
 
