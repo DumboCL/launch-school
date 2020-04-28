@@ -1,5 +1,3 @@
-require 'pry-byebug'
-
 INITIAL_MARKER = ' '
 PLAYER_MARKER = 'X'
 COMPUTER_MARKER = 'O'
@@ -21,7 +19,7 @@ def first_player_verified?(choice)
   /^[123]$/.match(choice)
 end
 
-def play_again_veryfied?(choose)
+def play_again_verified?(choose)
   /^[YyNn]$/.match(choose)
 end
 
@@ -43,7 +41,7 @@ def choose_first_player
   choice
 end
 
-def who_play(choice)
+def who_play_first(choice)
   if choice == '3'
     choice = Random.new.rand(1..2).to_s
   end
@@ -112,9 +110,6 @@ def player_places_piece!(brd)
   brd[square] = PLAYER_MARKER
 end
 
-# if player has 2 squares marked in a row,
-# then computer will defend the 3rd square.
-
 # rubocop:disable Lint/AssignmentInCondition
 def computer_defence(brd)
   WINNING_LINES.each do |line|
@@ -129,8 +124,6 @@ def computer_defence(brd)
   nil
 end
 
-# if the computer already has 2 in a row,
-# then fill in the 3rd square.
 def computer_offense(brd)
   WINNING_LINES.each do |line|
     if brd.values_at(*line).count(COMPUTER_MARKER) == 2
@@ -224,11 +217,8 @@ def play_again?
   loop do
     prompt("Play again? (y or n)")
     response = gets.chomp
-    if play_again_veryfied?(response)
-      break
-    else
-      prompt('This is not an invalid input, please choose again.')
-    end
+    break if play_again_verified?(response)
+    prompt('This is not an invalid input, please choose again.')
   end
 
   play_again = response.downcase == 'y'
@@ -242,7 +232,7 @@ first_player_choice = choose_first_player
 
 loop do
   board = initialize_board
-  first_player = current_player = who_play(first_player_choice)
+  first_player = current_player = who_play_first(first_player_choice)
 
   # game playing loop for one round
   loop do
