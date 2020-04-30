@@ -110,11 +110,11 @@ def player_places_piece!(brd)
   brd[square] = PLAYER_MARKER
 end
 
-# rubocop:disable Lint/AssignmentInCondition
 def computer_defence(brd)
   WINNING_LINES.each do |line|
     if brd.values_at(*line).count(PLAYER_MARKER) == 2
-      if empty_index = brd.values_at(*line).index(INITIAL_MARKER)
+      empty_index = brd.values_at(*line).index(INITIAL_MARKER)
+      if empty_index
         return line[empty_index]
       else
         next
@@ -127,7 +127,8 @@ end
 def computer_offense(brd)
   WINNING_LINES.each do |line|
     if brd.values_at(*line).count(COMPUTER_MARKER) == 2
-      if empty_index = brd.values_at(*line).index(INITIAL_MARKER)
+      empty_index = brd.values_at(*line).index(INITIAL_MARKER)
+      if empty_index
         return line[empty_index]
       else
         next
@@ -136,7 +137,6 @@ def computer_offense(brd)
   end
   nil
 end
-# rubocop:enable Lint/AssignmentInCondition
 
 def square_5_first(brd)
   if empty_squares(brd).include?(5)
