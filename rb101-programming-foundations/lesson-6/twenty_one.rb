@@ -34,8 +34,7 @@ def play_again?
     prompt('This is not an invalid input, please choose again.')
   end
 
-  play_again = response.downcase == 'y'
-  play_again
+  response.downcase == 'y'
 end
 
 def initialized_deck
@@ -127,8 +126,7 @@ end
 
 def min_deck_value(deck)
   deck_w_a, deck_wo_a = deck.partition { |card| card[:label] == 'A' }
-  min_value = value_without_a(deck_wo_a) + deck_w_a.size
-  min_value
+  value_without_a(deck_wo_a) + deck_w_a.size
 end
 
 def bust?(value)
@@ -139,7 +137,7 @@ def optimal?(value)
   value.between?(OPTIMAL_VALUE, TARGET_VALUE)
 end
 
-def deck_value(deck)
+def value_in_hand(deck)
   deck_w_a, = deck.partition { |card| card[:label] == 'A' }
   optimal = min_value = min_deck_value(deck)
   if min_value <= TARGET_VALUE
@@ -163,16 +161,16 @@ def player_turn(scores, deck, dealer_deck, player_deck)
     break if stay?(response)
     player_deck << draw_card(deck)
     display_table(scores, dealer_deck, player_deck)
-    break if bust?(deck_value(player_deck))
+    break if bust?(value_in_hand(player_deck))
   end
 end
 
 def dealer_turn(scores, deck, dealer_deck, player_deck)
   loop do
-    break if optimal?(deck_value(dealer_deck))
+    break if optimal?(value_in_hand(dealer_deck))
     dealer_deck << draw_card(deck)
     display_table(scores, dealer_deck, player_deck)
-    break if bust?(deck_value(dealer_deck))
+    break if bust?(value_in_hand(dealer_deck))
   end
 end
 
@@ -208,17 +206,17 @@ loop do
   display_table(scores, dealer_deck, player_deck)
 
   player_turn(scores, deck, dealer_deck, player_deck)
-  player_final = deck_value(player_deck)
+  player_final = value_in_hand(player_deck)
 
   message = ''
   winner = ''
   if bust?(player_final)
     message = 'player bust, dealer wins.'
-    dealer_final = deck_value(dealer_deck)
+    dealer_final = value_in_hand(dealer_deck)
     winner = 'dealer'
   else
     dealer_turn(scores, deck, dealer_deck, player_deck)
-    dealer_final = deck_value(dealer_deck)
+    dealer_final = value_in_hand(dealer_deck)
     if bust?(dealer_final)
       message = 'dealer bust, player wins.'
       winner = 'player'
