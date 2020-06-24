@@ -2,11 +2,8 @@ def balanced?(str)
   counter = 0
   
   str.chars.each do |chr|
-    if chr == '('
-      counter += 1
-    elsif chr == ')'
-      counter -= 1
-    end
+    counter += 1 if chr == '('
+    counter -= 1 if chr == ')'
     
     break if counter < 0
   end
