@@ -1,0 +1,3 @@
+The first gist will output 3 as the result.
+
+But the second one will encounter an error message which states that you tried to access x which is defined in a scope, but you tried to access it from outside the scope.

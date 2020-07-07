@@ -1,0 +1,3 @@
+this error message indicates that there is an unexpected ")" in my code somewhere, and also gives a suggestion that the correct symbol may be "}"
+
+The solution indicates that "there is an open bracket somewhere"
