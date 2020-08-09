@@ -6,10 +6,10 @@ class Light
     @color = color
   end
 
-  def self.status
+  def light_status
     "I have a brightness level of #{brightness} and a color of #{color}"
   end
 
 end
 
-puts Light.status
+puts Light.new('strong', 'white').light_status
