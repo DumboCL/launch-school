@@ -7,22 +7,22 @@ class Move
                     "l" => "lizard",
                     "sp" => "spock" }
 
-  WIN_LOSE_RELATIONS = { 'rock'     => ['scissors', 'lizard'],
-                         'paper'    => ['rock', 'spock'],
+  WIN_LOSE_RELATIONS = { 'rock' => ['scissors', 'lizard'],
+                         'paper' => ['rock', 'spock'],
                          'scissors' => ['paper', 'lizard'],
-                         'lizard'   => ['spock', 'paper'],
-                         'spock'    => ['scissors', 'rock'] }
+                         'lizard' => ['spock', 'paper'],
+                         'spock' => ['scissors', 'rock'] }
 
   def initialize(choice)
     @value = choice
   end
 
-  def >(other_move)
-    WIN_LOSE_RELATIONS[self.value].include?(other_move.value)
+  def >(other)
+    WIN_LOSE_RELATIONS[value].include?(other.value)
   end
 
-  def <(other_move)
-    WIN_LOSE_RELATIONS[other_move.value].include?(self.value)
+  def <(other)
+    WIN_LOSE_RELATIONS[other.value].include?(value)
   end
 
   def to_s
@@ -49,7 +49,8 @@ end
 
 class Score
   attr_reader :points
-  MAX_SCORE = 5
+
+  MAX_POINTS = 5
 
   def initialize
     @points = 0
@@ -64,30 +65,40 @@ class Score
   end
 
   def self.max_points?(score1, score2)
-    [score1.points, score2.points].max >= MAX_SCORE
+    [score1.points, score2.points].max >= MAX_POINTS
   end
 end
 
 class Player
-  attr_accessor :name, :move, :score
+  attr_accessor :name, :move, :score, :moves_history
 
   def initialize
     set_name
     @score = Score.new
+    @moves_history = []
   end
 
   def win
-    @score.add_one_point
+    score.add_one_point
+  end
+
+  def choose
+    update_history
+  end
+
+  def update_history
+    moves_history << move
   end
 end
 
 class Human < Player
   def set_name
-    input_name = ""
+    input_name = ''
     loop do
       puts "What's your name?"
       input_name = gets.chomp
       break unless input_name.empty?
+
       puts "Sorry, must enter a value."
     end
     self.name = input_name
@@ -99,29 +110,80 @@ class Human < Player
       puts "Please type your choice: #{Move.choices_string}:"
       choice = gets.chomp
       break if Move.choice_verified?(choice)
+
       puts "Sorry, invalid choice."
     end
     self.move = Move.new(Move::VALID_CHOICES[choice])
+    super
   end
 end
 
 class Computer < Player
+  def choose
+    self.move = Move.new(Move::VALID_CHOICES.values.sample)
+    super
+  end
+end
+
+class R2d2 < Computer
   def set_name
-    self.name = ['R2D2', 'Hal', 'Chappie', 'Sonny', 'Number 5'].sample
+    self.name = 'R2D2'
   end
 
   def choose
-    self.move = Move.new(Move::VALID_CHOICES.values.sample)
+    self.move = Move.new(Move::VALID_CHOICES['r'])
+    update_history
+  end
+end
+
+class Hal < Computer
+  def set_name
+    self.name = 'Hal'
+  end
+
+  def choose
+    self.move = Move.new(choices.sample)
+    update_history
+  end
+
+  def choices
+    choices = [Move::VALID_CHOICES['r']]
+    choices += [Move::VALID_CHOICES['sc']] * 5
+    choices += [Move::VALID_CHOICES['l']] * 2
+    choices += [Move::VALID_CHOICES['sp']] * 2
+    choices
+  end
+end
+
+class Chappie < Computer
+  def set_name
+    self.name = 'Chappie'
+  end
+end
+
+class Sonny < Computer
+  def set_name
+    self.name = 'Sonny'
+  end
+end
+
+class Number5 < Computer
+  def set_name
+    self.name = 'Number 5'
   end
 end
 
 # Game Orchestration Engine
 class RPSGame
-  attr_accessor :human, :computer, :winner
+  attr_accessor :human, :computer, :last_round_winner
+
+  TABLE_WIDTH = 27
+  COLUMN_WIDTH = TABLE_WIDTH / 3
+  ROBOTS = [R2d2, Hal, Chappie, Sonny, Number5]
 
   def initialize
     @human = Human.new
-    @computer = Computer.new
+    @computer = ROBOTS.sample.new
   end
 
   def clean_screen
@@ -134,37 +196,87 @@ class RPSGame
   end
 
   def display_goodbye_message
-    puts "Thanks for playing Rock, Paper, Scissors. Good bye!"
+    puts "Thanks for playing Rock, Paper, Scissors, Lizard, Spock. Good bye!"
+  end
+
+  def players
+    [human, computer]
   end
 
   def display_moves
-    puts "#{human.name} chose #{human.move}"
-    puts "#{computer.name} chose #{computer.move}"
-  end
-
-  def determine_winner
-    if human.move > computer.move
-      puts "#{human.name} won!"
-      self.winner = human.name
-      human.win
-    elsif human.move < computer.move
-      puts "#{computer.name} won!"
-      self.winner = computer.name
-      computer.win
-    else
-      puts "It's a tie!"
+    players.each do |player|
+      puts "#{player.name} chose #{player.move}"
     end
   end
 
-  def display_result
-    puts human.score
-    puts computer.score
+  def winner(human, computer)
+    if human.move > computer.move
+      human
+    elsif human.move < computer.move
+      computer
+    end
   end
 
-  def has_final_winner?
+  def determine_winner
+    self.last_round_winner = winner(human, computer)
+    if !last_round_winner
+      puts "It's a tie!"
+    else
+      puts "#{last_round_winner.name} won!"
+      last_round_winner.win
+    end
+  end
+
+  def round_numbers
+    human.moves_history.size
+  end
+
+  def print_double_lines
+    puts "=" * TABLE_WIDTH
+  end
+
+  def print_single_lines
+    puts "-" * TABLE_WIDTH
+  end
+
+  def print_header
+    header = ''.rjust(COLUMN_WIDTH, ' ')
+    players.each { |player| header += player.name.rjust(COLUMN_WIDTH, ' ') }
+    puts header
+  end
+
+  def print_scores
+    scores = 'scores'.ljust(COLUMN_WIDTH, ' ')
+    players.each do |player|
+      scores += player.score.to_s.rjust(COLUMN_WIDTH, ' ')
+    end
+    puts scores
+  end
+
+  def print_history
+    1.upto(round_numbers) do |round|
+      round_line = "round #{round}".ljust(COLUMN_WIDTH, ' ')
+      players.each do |player|
+        history = player.moves_history
+        round_line += history[round - 1].to_s.rjust(COLUMN_WIDTH, ' ')
+      end
+      puts round_line
+    end
+  end
+
+  def display_scores_table
+    print_double_lines
+    print_header
+    print_scores
+    print_single_lines
+    print_history
+    print_double_lines
+  end
+
+  def final_winner?
     if Score.max_points?(human.score, computer.score)
-      puts "#{self.winner} first reaches 5 wins."
-      puts "#{self.winner} gets the Trophy!"
+      puts "#{last_round_winner.name} first reaches 5 wins."
+      puts "#{last_round_winner.name} gets the Trophy!"
       return true
     end
 
@@ -176,7 +288,7 @@ class RPSGame
     loop do
       puts "Would you like to play again? (y/n)"
       answer = gets.chomp
-      break if ['y', 'n'].include?(answer.downcase)
+      break if %w(y n).include?(answer.downcase)
       puts "Sorry, must be y or n"
     end
 
@@ -184,22 +296,25 @@ class RPSGame
     return true if answer.downcase == 'y'
   end
 
-  def play
-    clean_screen
-    display_welcome_message
+  def play_game
     loop do
-      human.choose
-      computer.choose
+      players.map(&:choose)
       display_moves
       determine_winner
-      display_result
-      break if has_final_winner?
+      display_scores_table
+      break if final_winner?
       break unless play_again?
       clean_screen
     end
+  end
+
+  def start
+    clean_screen
+    display_welcome_message
+    play_game
     display_goodbye_message
   end
 end
 
 system "clear"
-RPSGame.new.play
+RPSGame.new.start
