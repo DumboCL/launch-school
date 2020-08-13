@@ -186,7 +186,16 @@ class RPSGame
     @computer = ROBOTS.sample.new
   end
 
-  def clean_screen
+  def start
+    clear_screen
+    display_welcome_message
+    play_game
+    display_goodbye_message
+  end
+
+  private
+
+  def clear_screen
     system "clear"
   end
 
@@ -209,7 +218,7 @@ class RPSGame
     end
   end
 
-  def winner(human, computer)
+  def determine_winner(human, computer)
     if human.move > computer.move
       human
     elsif human.move < computer.move
@@ -217,8 +226,8 @@ class RPSGame
     end
   end
 
-  def determine_winner
-    self.last_round_winner = winner(human, computer)
+  def display_winner
+    self.last_round_winner = determine_winner(human, computer)
     if !last_round_winner
       puts "It's a tie!"
     else
@@ -227,25 +236,25 @@ class RPSGame
     end
   end
 
-  def round_numbers
+  def current_round_amount
     human.moves_history.size
   end
 
-  def print_double_lines
+  def display_double_lines
     puts "=" * TABLE_WIDTH
   end
 
-  def print_single_lines
+  def display_single_lines
     puts "-" * TABLE_WIDTH
   end
 
-  def print_header
+  def display_header
     header = ''.rjust(COLUMN_WIDTH, ' ')
     players.each { |player| header += player.name.rjust(COLUMN_WIDTH, ' ') }
     puts header
   end
 
-  def print_scores
+  def display_scores
     scores = 'scores'.ljust(COLUMN_WIDTH, ' ')
     players.each do |player|
       scores += player.score.to_s.rjust(COLUMN_WIDTH, ' ')
@@ -253,8 +262,8 @@ class RPSGame
     puts scores
   end
 
-  def print_history
-    1.upto(round_numbers) do |round|
+  def display_history
+    1.upto(current_round_amount) do |round|
       round_line = "round #{round}".ljust(COLUMN_WIDTH, ' ')
       players.each do |player|
         history = player.moves_history
@@ -265,17 +274,17 @@ class RPSGame
   end
 
   def display_scores_table
-    print_double_lines
-    print_header
-    print_scores
-    print_single_lines
-    print_history
-    print_double_lines
+    display_double_lines
+    display_header
+    display_scores
+    display_single_lines
+    display_history
+    display_double_lines
   end
 
   def final_winner?
     if Score.max_points?(human.score, computer.score)
-      puts "#{last_round_winner.name} first reaches 5 wins."
+      puts "#{last_round_winner.name} reached 5 wins first!"
       puts "#{last_round_winner.name} gets the Trophy!"
       return true
     end
@@ -292,27 +301,19 @@ class RPSGame
       puts "Sorry, must be y or n"
     end
 
-    return false if answer.downcase == 'n'
-    return true if answer.downcase == 'y'
+    answer.downcase == 'y'
   end
 
   def play_game
     loop do
       players.map(&:choose)
       display_moves
-      determine_winner
+      display_winner
       display_scores_table
       break if final_winner?
       break unless play_again?
-      clean_screen
+      clear_screen
     end
-  end
-
-  def start
-    clean_screen
-    display_welcome_message
-    play_game
-    display_goodbye_message
   end
 end
 
