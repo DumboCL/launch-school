@@ -59,11 +59,8 @@ def read_user_choice
   loop do
     prompt("Please type your choice: #{choices_string}")
     input_choice = Kernel.gets().chomp()
-    if choice_veryfied?(input_choice)
-      break
-    else
-      prompt("That's not a valid choice.")
-    end
+    break if choice_veryfied?(input_choice)
+    prompt("That's not a valid choice.")
   end
 
   retrieve_choice(input_choice)
@@ -131,15 +128,11 @@ def play_again?
   loop do
     prompt("Do you want to continue?('y' to continue, 'n' to quit.)")
     response = Kernel.gets().chomp()
-    if once_again_veryfied?(response)
-      break
-    else
-      prompt('This is not an invalid input, please try again.')
-    end
+    break if once_again_veryfied?(response)
+    prompt('This is not an invalid input, please try again.')
   end
 
-  once_again = response.downcase() == 'y'
-  once_again
+  response.downcase() == 'y'
 end
 
 clear_screen
@@ -162,7 +155,7 @@ loop do
   display_scores(winner, scores)
 
   break if game_end?(scores)
-  
+
   break unless play_again?
 
   clear_screen
