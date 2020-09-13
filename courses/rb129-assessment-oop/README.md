@@ -5,10 +5,13 @@
 1. Classes and objects
     - class:
         - classes are basic outlines of what an object should be made of and what it should be able to do.
+        - Think of classes as molds and objects as the things you produce out of those molds.
     - objects: 
         - Everything in Ruby is Object
         - Methods and blocks are not Objects
         - Objects are created from classes
+        - One benefit of creating objects is that they allow the programmer to think on a new level of abstraction
+        - Objects are represented as real-world nouns and can be given methods that describe the behavior the programmer is trying to represent.
         
     ```ruby
     class GoodDog; end
@@ -91,6 +94,11 @@
         - is the ability for different types of data to respond to a common interface. For instance, if we have a method that expects argument objects that have an move method, we can pass it any type of argument, provided it has a compatible move method. The object might represent a human, a cat, a jellyfish, or, conceivably, even a car or train. That is, it lets objects of different types respond to the same method invocation.
         - Another way to apply polymorphic structure to Ruby programs is to use a Module.
 7. Modules
+  - A module allows us to group reusable code into one place.
+  - Modules are similar to classes in that they contain shared behavior.
+  - You cannot create an object with a module.
+  - A module must be mixed in with a class using the `include` method invocation. It is called a mixin.
+  - Modules are also used as a namespace.
 8. Method lookup path
     - Ruby has a distinct lookup path that it follows each time a method is called. We can use the ancestors method on any class to find out the method lookup chain.
 9. self
