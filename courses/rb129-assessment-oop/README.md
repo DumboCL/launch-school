@@ -66,7 +66,8 @@
     kitty.name = 'meow'
     p kitty.name
     ```
-    The above code shows the original getter and setter methods. If use attr_* methods, these original methods will no longer need.
+    - The above code shows the original getter and setter methods. If use attr_* methods, these original methods will no longer need.
+    - By using getter and setter methods to access the instance variables, we make only one interface to access instance variables. If later we need to change the implementation of instance variables, instead of change multiple places of the occurrance, we only need to change in one place.
 
 3. How to call setters and getters
     ```ruby
