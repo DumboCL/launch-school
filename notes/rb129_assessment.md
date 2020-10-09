@@ -102,7 +102,7 @@
   - Modules are also used as a namespace.
 8. Method lookup path
    
-    - Ruby has a distinct lookup path that it follows each time a method is called. We can use the ancestors method on any class to find out the method lookup chain.
+    - Ruby has a distinct lookup path that it follows each time a method is called. We can use the **ancestors method on any** **class** to find out the method lookup chain.
     
 9. self
     - Calling methods with self
