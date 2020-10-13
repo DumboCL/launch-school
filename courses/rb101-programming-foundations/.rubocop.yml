@@ -1,4 +1,4 @@
-# .rubocop.yml for RB101 Lessons 2-5 (10 Jun 2020)
+# .rubocop.yml for RB101 Lessons 2-5 (05 Oct 2020)
 
 AllCops:
   # Display cop names
@@ -66,8 +66,8 @@ Style/GuardClause:
 
 Style/HashSyntax:
   Description: >-
-                 Prefer Ruby 1.9 hash syntax { a: 1, b: 2 } over 1.8 syntax
-                 { :a => 1, :b => 2 }.
+    Prefer Ruby 1.9 hash syntax { a: 1, b: 2 } over 1.8 syntax
+    { :a => 1, :b => 2 }.
   Enabled: true
   EnforcedStyle: ruby19_no_mixed_keys
   UseHashRocketsWithSymbolValues: false
@@ -75,8 +75,8 @@ Style/HashSyntax:
 
 Style/IfUnlessModifier:
   Description: >-
-                 Favor modifier if/unless usage when you have a
-                 single-line body.
+    Favor modifier if/unless usage when you have a
+    single-line body.
   Enabled: false
 
 Style/InlineComment:
@@ -97,8 +97,8 @@ Style/MutableConstant:
 
 Style/NegatedIf:
   Description: >-
-                 Favor unless over if for negative conditions
-                 (or control flow or).
+    Favor unless over if for negative conditions
+    (or control flow or).
   Enabled: false
 
 Style/NegatedWhile:
@@ -115,8 +115,8 @@ Style/NumericLiterals:
 
 Style/NumericPredicate:
   Description: >-
-                 Checks for the use of predicate- or comparison methods for
-                 numeric comparisons.
+    Checks for the use of predicate- or comparison methods for
+    numeric comparisons.
   Enabled: false
 
 Style/OneLineConditional:
@@ -129,8 +129,8 @@ Naming/BinaryOperatorParameterName:
 
 Style/ParenthesesAroundCondition:
   Description: >-
-                 Don't use parentheses around the condition of an
-                 if/unless/while.
+    Don't use parentheses around the condition of an
+    if/unless/while.
   Enabled: true
   AllowSafeAssignment: false
 
@@ -145,6 +145,10 @@ Style/PerlBackrefs:
 Style/Proc:
   Description: Use proc instead of Proc.new.
   Enabled: false
+
+Style/RedundantFetchBlock:
+  Description: Only way to keep FetchBlock warning from popping up.
+  Enabled: true
 
 Style/RedundantParentheses:
   Enabled: false
@@ -163,9 +167,9 @@ Style/RegexpLiteral:
 
 Style/SafeNavigation:
   Description: >-
-                  This cop transforms usages of a method call safeguarded by
-                  a check for the existance of the object to
-                  safe navigation (`&.`).
+    This cop transforms usages of a method call safeguarded by
+    a check for the existance of the object to
+    safe navigation (`&.`).
   Enabled: false
 
 Style/SingleLineBlockParams:
@@ -198,8 +202,8 @@ Style/WordArray:
 
 Metrics/AbcSize:
   Description: >-
-                 A calculated magnitude based on number of assignments,
-                 branches, and conditions.
+    A calculated magnitude based on number of assignments,
+    branches, and conditions.
   Enabled: true
   Max: 18
 
@@ -218,8 +222,8 @@ Layout/LineLength:
   StyleGuide: https://github.com/bbatsov/ruby-style-guide#80-character-limits
   AllowURI: true
   URISchemes:
-  - http
-  - https
+    - http
+    - https
 
 Metrics/MethodLength:
   Description: 'Avoid methods longer than 15 lines of code.'
