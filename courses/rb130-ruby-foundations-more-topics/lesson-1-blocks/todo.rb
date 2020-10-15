@@ -3,12 +3,12 @@
 # flag to show whether this todo item is done.
 
 class Todo
-  DONE_MARKER = 'X'
-  UNDONE_MARKER = ' '
+  DONE_MARKER = 'X'.freeze
+  UNDONE_MARKER = ' '.freeze
 
   attr_accessor :title, :description, :done
 
-  def initialize(title, description='')
+  def initialize(title, description = '')
     @title = title
     @description = description
     @done = false
@@ -30,10 +30,10 @@ class Todo
     "[#{done? ? DONE_MARKER : UNDONE_MARKER}] #{title}"
   end
 
-  def ==(otherTodo)
-    title == otherTodo.title &&
-      description == otherTodo.description &&
-      done == otherTodo.done
+  def ==(other)
+    title == other.title &&
+      description == other.description &&
+      done == other.done
   end
 end
 
@@ -46,11 +46,9 @@ class TodoList
   end
 
   def add(todo)
-    if todo.class != Todo
-      raise TypeError.new("Can only add Todo objects")
-    else
-      self.todos << todo
-    end
+    raise TypeError, 'Can only add Todo objects' if todo.class != Todo
+
+    todos << todo
 
     todos
   end
@@ -72,7 +70,7 @@ class TodoList
   end
 
   def done?
-    todos.all? { |todo| todo.done? }
+    todos.all?(&:done?)
   end
 
   def shift
@@ -103,28 +101,46 @@ class TodoList
   end
 
   def done!
-    todos.each { |todo| todo.done! }
+    todos.each(&:done!)
   end
 
   def each
-    counter = 0
-
-    while counter < size
-      yield(item_at(counter))
-      counter += 1
+    todos.each do |todo|
+      yield(todo)
     end
-
     self
   end
 
   def select
-    select_todos = TodoList.new("selected todo list")
-
+    select_todos = TodoList.new('selected todo list')
     each do |todo|
-      select_todos.todos << todo if yield(todo)
+      select_todos.add(todo) if yield(todo)
     end
-
     select_todos
+  end
+
+  def find_by_title(title)
+    select { |todo| todo.title.eql?(title) }.first
+  end
+
+  def all_done
+    select(&:done?)
+  end
+
+  def all_not_done
+    select { |todo| !todo.done? }
+  end
+
+  def mark_done(str)
+    find_by_title(title) && find_by_title(title).done!
+  end
+
+  def mark_all_done
+    each(&:done!)
+  end
+
+  def mark_all_undone
+    each(&:undone!)
   end
 
   def to_s
@@ -141,9 +157,9 @@ end
 
 
 # given
-todo1 = Todo.new("Buy milk")
-todo2 = Todo.new("Clean room")
-todo3 = Todo.new("Go to gym")
+todo1 = Todo.new('Buy milk')
+todo2 = Todo.new('Clean room')
+todo3 = Todo.new('Go to gym')
 list = TodoList.new("Today's Todos")
 
 # # ---- Adding to the list -----
@@ -231,9 +247,9 @@ list = TodoList.new("Today's Todos")
 # # [X] Clean room
 # # [ ] Go to gym
 
-todo1 = Todo.new("Buy milk")
-todo2 = Todo.new("Clean room")
-todo3 = Todo.new("Go to gym")
+todo1 = Todo.new('Buy milk')
+todo2 = Todo.new('Clean room')
+todo3 = Todo.new('Go to gym')
 
 list = TodoList.new("Today's Todos")
 list.add(todo1)
@@ -246,6 +262,8 @@ end
 
 todo1.done!
 
-results = list.select { |todo| todo.done? }    # you need to implement this method
+results = list.select(&:done?)    # you need to implement this method
 
 puts results.inspect
+
+puts list.all_done
