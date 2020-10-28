@@ -1,5 +1,7 @@
 require "minitest/autorun"
 require "minitest/pride"
+require "simplecov"
+SimpleCov.start
 
 require_relative "todo"
 
