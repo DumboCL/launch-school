@@ -9,3 +9,7 @@ def gather(items)
 end
 
 gather(items) { |products| puts products.join(', ') }
+
+gather(items) do |produce|
+  puts "We've gathered some vegetables: #{produce[1]} and #{produce[2]}"
+end
