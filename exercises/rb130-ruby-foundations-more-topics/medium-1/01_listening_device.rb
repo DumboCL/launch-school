@@ -21,6 +21,6 @@ class Device
 end
 
 listener = Device.new
-listener.listen { "Hello World!" }
+listener.listen { 'Hello World!' }
 listener.listen
 listener.play # Outputs "Hello World!"
