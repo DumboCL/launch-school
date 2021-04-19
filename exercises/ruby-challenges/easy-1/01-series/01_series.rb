@@ -1,11 +1,20 @@
 class Series
   def initialize(str)
-    @nums = str.chars.map(&:to_i)
+    @series = str.chars.map(&:to_i)
   end
 
   def slices(len)
-    raise ArgumentError, 'the requested length is bigger than length of string' if len > @nums.size
+    raise ArgumentError, 'the requirement exceed the size of the object' if len > @series.size
 
-    @nums.each_cons(len).to_a
+    # version 1
+    # @series.each_cons(len).to_a
+
+    # version 2
+    slices = []
+    0.upto(@series.length - len) do |index|
+      slices << @series[index, len]
+    end
+
+    slices
   end
 end
