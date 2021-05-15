@@ -4,15 +4,16 @@ class Octal
   end
 
   def to_decimal
-    return 0 unless @octal_str.match?(/\b[0-7]+\b/)
+    return 0 if invalid?
 
-    base_amount = 0
-    @octal_str.chars.reverse.each_with_index do |chr, index|
-      base_amount += chr.to_i * (8 ** index)
-    end
+    @octal_str.chars.reverse.map.with_index do |chr, index|
+      chr.to_i * 8**index
+    end.sum
+  end
 
-    base_amount
+  protected
+
+  def invalid?
+    @octal_str.match?(/[^0-7]/)
   end
 end
-
-# p some = Octal.new('73').to_decimal
