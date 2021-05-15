@@ -1,16 +1,19 @@
 class Trinary
-  def initialize(trinary_str)
-    @trinary_str = trinary_str
+  def initialize(str)
+    @trinary_str = str
   end
 
   def to_decimal
-    return 0 unless @trinary_str.match?(/\b[0-2]+\b/)
+    return 0 unless valid?
 
-    total_ammount = 0
-    @trinary_str.chars.reverse.each_with_index do |chr, index|
-      total_ammount += chr.to_i * (3 ** index)
-    end
+    @trinary_str.reverse.chars.map.with_index do |chr, index|
+      chr.to_i * (3**index)
+    end.sum
+  end
 
-    total_ammount
+  private
+
+  def valid?
+    @trinary_str.chars.all? { |chr| chr.match?(/[0-2]/) }
   end
 end
