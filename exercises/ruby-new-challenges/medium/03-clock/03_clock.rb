@@ -1,3 +1,6 @@
+# frozen_string_literal: true
+
+# Clock Class
 class Clock
   def initialize(hours, minutes)
     @hours = hours
@@ -9,17 +12,16 @@ class Clock
   end
 
   def to_s
-    format('%02d:%02d', hours, minutes)
+    format('%<hours>02d:%<minutes>02d', hours: hours, minutes: minutes)
   end
 
-  def +(other)
-    adjust_minute(other)
+  def +(mins)
+    adjust_minute(mins)
     Clock.new(hours, minutes)
   end
 
-  def -(other)
-    adjust_minute(-other)
-    Clock.new(hours, minutes)
+  def -(mins)
+    self.+(-mins)
   end
 
   def ==(other)
