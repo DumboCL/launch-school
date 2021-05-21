@@ -19,6 +19,7 @@ class TextAnalyzer
   end
 end
 
+
 analyzer = TextAnalyzer.new
 analyzer.process { |data| puts "#{data[:paragraphs]} paragraphs" }
 analyzer.process { |data| puts "#{data[:lines]} lines" }

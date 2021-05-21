@@ -16,3 +16,9 @@
    1. Shift+Alt+Right
 7. Duplicate the current line
    1. Shift+Alt+Up/Down
+8. Indent
+   1. Shift + Option + F
+9. Cleaning Trailing White Spaces
+   1. Command + K + Command + X
+10. ERB
+   1. Command + Shift + `   : convert to <%= %>

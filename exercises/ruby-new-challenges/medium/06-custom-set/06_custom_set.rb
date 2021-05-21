@@ -1,9 +1,11 @@
+# frozen_string_literal: true
+
 class CustomSet
   attr_reader :elements
 
   def initialize(arr = [])
     @elements = arr
-    data_process
+    data_cleaning
   end
 
   def empty?
@@ -28,7 +30,7 @@ class CustomSet
 
   def add(element)
     @elements << element
-    data_process
+    data_cleaning
 
     self
   end
@@ -59,7 +61,7 @@ class CustomSet
 
   private
 
-  def data_process
+  def data_cleaning
     @elements.uniq!
     @elements.sort!
   end

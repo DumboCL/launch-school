@@ -26,7 +26,7 @@ class Move
   end
 
   def to_s
-    @value
+    value
   end
 
   def self.choice_verified?(choice_key)
