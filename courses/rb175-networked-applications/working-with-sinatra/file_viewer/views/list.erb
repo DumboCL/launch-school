@@ -1,0 +1,28 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<title>File Browser</title>
+	</head>
+	<body>
+		<ul>
+			<% @names.each do |file| %>
+				<li>
+          <a href="<%= file %>">
+					<%= file %>
+          </a>
+				</li>
+			<% end %>
+		</ul>
+
+		<p>
+			<% if params[:sort] == "desc" %>
+				<a href="/">Sort ascending</a>
+			<% else %>
+				<a href="/?sort=desc">Sort descending</a>
+			<% end %>
+		</p>
+		<script type="text/javascript" src="/javascripts/ui.js"></script>
+	</body>
+</html>
