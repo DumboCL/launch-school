@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 birds = %w[raven finch hawk eagle]
 
 def my_method(arr)
