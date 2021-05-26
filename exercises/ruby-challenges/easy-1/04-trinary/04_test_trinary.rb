@@ -1,6 +1,9 @@
+# frozen_string_literal: true
+
 require 'minitest/autorun'
 require_relative '04_trinary'
 
+# test class for Trinary
 class TrinaryTest < Minitest::Test
   def test_trinary_1_is_decimal_1
     assert_equal 1, Trinary.new('1').to_decimal
