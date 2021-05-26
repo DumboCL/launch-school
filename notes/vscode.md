@@ -6,13 +6,15 @@
       2. When no text selected, VS Code will automatically select the entire line.
 2. Select Multiple Lines
    1. Command + L
-3. Expand Selection
+3. Select Current Word
+   1. Command + D
+4. Expand Selection
    1. Shift + Option + ->
-4. Search in Project
+5. Search in Project
    1. Command + Shift + F
-5. Toggle Side Bar
+6. Toggle Side Bar
    1. Command + B
-6. Shrink/expand selection
+7. Shrink/expand selection
    1. Shift+Alt+Right
-7. Duplicate the current line
+8. Duplicate the current line
    1. Shift+Alt+Up/Down
