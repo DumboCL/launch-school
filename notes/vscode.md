@@ -18,3 +18,5 @@
    1. Shift+Alt+Right
 8. Duplicate the current line
    1. Shift+Alt+Up/Down
+9. Open Terminal Windows
+   1. Ctrl + `
