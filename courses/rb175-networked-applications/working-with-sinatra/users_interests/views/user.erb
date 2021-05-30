@@ -1,0 +1,18 @@
+<h2 class="content-subhead"><%= params[:username] %></h2>
+<div class="pure-menu">
+	<dl>
+		<dt class="pure-menu-list">Email</dt>
+		<dd><%= @email %></dd>
+		<dt class="pure-menu-list">Interests</dt>
+		<dd><%= @interests.join(', ') %></dd>
+	</dl>
+</div>
+<ul>
+	<% @footer_names.each do |name| %>
+		<li>
+			<a href="/<%= name %>">
+				<%= name.to_s %>
+			</a>
+		</li>
+	<% end %>
+</ul>

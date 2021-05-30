@@ -1,0 +1,32 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<title><%= @title %></title>
+		<link rel="stylesheet" href="/stylesheets/pure-min.css">
+		<link rel="stylesheet" href="/stylesheets/fonts.css">
+		<link rel="stylesheet" href="/stylesheets/users_interests.css">
+	</head>
+	<body>
+		<div id="layout">
+			<div id="main">
+				<div class="header">
+					<h1>Users and Interests</h1>
+				</div>
+				<div class="content">
+					<%= yield %>
+				</div>
+			</div>
+		</div>
+		<div id="layout">
+			<div id="main">
+				<div class="header">
+					<h4>There are <%= no_of_users %> users with a total of <%= count_interests %> interests.</h4>
+				</div>
+			</div>
+		</div>
+
+		<script type="text/javascript" src="javascripts/ui.js"></script>
+	</body>
+</html>
