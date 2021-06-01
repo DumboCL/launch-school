@@ -1,0 +1,25 @@
+table {
+  background-color: cyan;
+  border-collapse: collapse;
+}
+
+
+tbody tr:nth-child(2n+1) {
+  background-color: orange;
+}
+
+tbody tr:nth-child(2n+2) {
+  background-color: yellow;
+}
+
+[scope="col"] {
+  color: green;
+}
+
+[scope="row"] {
+  color: blue;
+}
+
+td, th {
+  border: 1px solid gray;
+}
