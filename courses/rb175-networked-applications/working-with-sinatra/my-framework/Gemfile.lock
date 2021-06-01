@@ -1,14 +1,15 @@
 GEM
   remote: https://rubygems.org/
   specs:
-    rack (2.0.9)
+    rack (2.1.4)
     webrick (1.7.0)
 
 PLATFORMS
   x86_64-darwin-20
+  x86_64-linux
 
 DEPENDENCIES
-  rack (~> 2.0.1)
+  rack (~> 2.1.4)
   webrick
 
 RUBY VERSION
