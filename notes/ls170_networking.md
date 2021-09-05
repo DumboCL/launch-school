@@ -4,6 +4,7 @@
    3. Such as in an office environment, would be multiple computers and other devices connected via a network bridging device such as a **hub** or, more likely, a **switch**. This implementation is known as **LAN**.
    4. We add **routers** to enable communication between networks. Within a Local Area Network, they work as gateways.
    5. ![what-is-internet-multiple-networks-routers](/var/folders/13/k6h94srx0bldtb13zzlm2gpc0000gn/T/com.evernote.Evernote/WebKitDnD.wFBd9y/what-is-internet-multiple-networks-routers.png)
+   6. ![img](https://vahid.blog/post/2020-12-21-how-the-internet-works-part-ii-layers/featured_hu6bd523470eca3355f8b7ab1c32ccd32e_185506_720x0_resize_q90_lanczos.jpg)
 2. Protocols
    1. A set of rules governing the exchange or transmission of data.
    2. Protocols act as systems of rules for network communication.
@@ -36,7 +37,8 @@
       1. Different protocols or protocol layers refer to PDUs by different names. At the Link/ Data Link layer, for example, a PDU is known as a *frame*. At the Internet/ Network layer it is known as a *packet*. At the Transport layer, it is known as a *segment* (TCP) or *datagram* (UDP).
       2. the PDU consists of a header, a data payload, and in some cases a trailer or footer.
       3. the purpose of them is the same in each case: to provide protocol-specific metadata about the PDU.
-      4. ![layered-system-encapsulation](/var/folders/13/k6h94srx0bldtb13zzlm2gpc0000gn/T/com.evernote.Evernote/WebKitDnD.LwYFIB/layered-system-encapsulation.png)
+      4. 
+      5. ![layered-system-encapsulation](/var/folders/13/k6h94srx0bldtb13zzlm2gpc0000gn/T/com.evernote.Evernote/WebKitDnD.LwYFIB/layered-system-encapsulation.png)
          1. The entire PDU from a protocol at one layer is set as the data payload for a protocol at the layer below. For example, a HTTP Request at the Application layer could be set as the payload for a TCP segment at the transport layer.
             1. For example, an email client would use SMTP, and web browser HTTP, and a file transfer program FTP, but all three of these programs could use TCP at the Transport layer to transfer the application layer data.
          2. Protocols at one layer provide services to the layer above.
@@ -861,3 +863,50 @@ Why do we need digital TLS/SSL certificates?
 •
 
 What is Cipher Suites?
+
+
+
+_______
+Marcos
+Source port: 65535
+Source ip: my.home.in.ny
+
+To -> Spotify server
+
+506     TCP Segment
+108.23.46.77:       IP Packet
+destination IP  + Destination port
+
+
+
+Spotify
+
+
+
+                  Ip packet
+
+______
+
+spotify.com
+
+request
+
+DNS - 
+
+TCP Segment Port :506
+
+DNS - dns database - DNS Servers
+
+108.23.46.77:506
+
+Source: my.home.in.ny
+destination108.23.46.77
+
+_____
+
+108.23.46.77:506 listen() [original socket object]
+
+
+vic(destionation IP, destination port, source ip, source port)
+
+natalie(destionation IP, destination port, source ip, source port)
